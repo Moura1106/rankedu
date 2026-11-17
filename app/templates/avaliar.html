@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block titulo %}Avaliar{% endblock %}
+{% block conteudo %}
+{% set notas = [('nota_empregabilidade', 'Empregabilidade', anterior.nota_empregabilidade if anterior else none),
+                ('nota_preparo', 'Preparo técnico', anterior.nota_preparo if anterior else none),
+                ('nota_soft_skills', 'Soft skills', anterior.nota_soft_skills if anterior else none)] %}
+<form class="caixa" method="post">
+  <h1>Avaliar oferta</h1>
+  <p class="sub">{{ oferta.curso.nome }} – {{ oferta.instituicao.nome }} ({{ oferta.modalidade.rotulo }})</p>
+  {% if anterior %}
+    <div class="aviso">Você já avaliou esta oferta (status: {{ anterior.status.value.lower() }}). Enviar de novo atualiza sua avaliação, e ela volta para moderação.</div>
+  {% endif %}
+  {% for campo, rotulo, atual in notas %}
+  <fieldset class="estrelas">
+    <legend>{{ rotulo }}</legend>
+    {% for n in range(1, 6) %}
+      <label><input type="radio" name="{{ campo }}" value="{{ n }}" required {% if atual == n %}checked{% endif %}> {{ n }}</label>
+    {% endfor %}
+  </fieldset>
+  {% endfor %}
+  <label>Comentário (opcional)
+    <textarea name="comentario" maxlength="1000" rows="4">{{ anterior.comentario if anterior and anterior.comentario else '' }}</textarea>
+  </label>
+  <button class="botao">Enviar avaliação</button>
+  <p class="sub">A avaliação só aparece no site depois de aprovada pela moderação.</p>
+</form>
+{% endblock %}

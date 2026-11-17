@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block titulo %}{{ oferta.instituicao.sigla or oferta.instituicao.nome }} – {{ oferta.curso.nome }}{% endblock %}
+{% block conteudo %}
+<a class="voltar" href="{{ url_for('ranking', curso=oferta.curso.id) }}">← Voltar ao ranking</a>
+<h1>{{ oferta.curso.nome }} <span class="sub">·</span> {{ oferta.instituicao.nome }}</h1>
+<p class="meta">
+  <span class="selo {{ 'publica' if oferta.instituicao.eh_publica() else 'privada' }}">{{ 'Pública' if oferta.instituicao.eh_publica() else 'Privada' }}</span>
+  {{ oferta.instituicao.cidade }}/{{ oferta.instituicao.uf }} · {{ oferta.modalidade.rotulo }}
+  {% if oferta.instituicao.site %} · <a href="{{ oferta.instituicao.site }}" target="_blank" rel="noopener">site</a>{% endif %}
+</p>
+
+<section class="cartoes">
+  <div class="cartao"><small>Nota final</small><strong>{{ oferta.nota_final() | nota }}</strong></div>
+  <div class="cartao"><small>Nota oficial (CPC/ENADE)</small><strong>{{ oferta.nota_oficial() | nota }}</strong>
+    <span>CPC {{ oferta.cpc or '—' }} · ENADE {{ oferta.conceito_enade or '—' }}</span></div>
+  <div class="cartao"><small>Média do mercado</small><strong>{{ oferta.media_mercado() | nota }}</strong>
+    <span>{{ oferta.avaliacoes_aprovadas() | length }} avaliação(ões) aprovada(s)</span></div>
+  <div class="cartao"><small>Mensalidade</small><strong>{{ oferta.mensalidade_formatada() }}</strong></div>
+</section>
+<p class="formula">Cálculo: {{ (ranking.PESO_OFICIAL * 100) | int }}% × oficial + {{ (ranking.PESO_MERCADO * 100) | int }}% × mercado
+  {%- if oferta.nota_oficial() is none %} — sem nota oficial, a oferta vai para o fim do ranking.
+  {%- elif oferta.media_mercado() is none %} — sem avaliações aprovadas, a nota final é a nota oficial.{% endif %}</p>
+
+<section class="pitch">
+  <h2>Sobre o curso</h2>
+  <p>{{ oferta.curso.pitch_texto }}</p>
+  <a href="{{ url_for('curso', curso_id=oferta.curso.id) }}">Ver pitch completo →</a>
+</section>
+
+<section>
+  <div class="titulo-secao">
+    <h2>O que o mercado diz</h2>
+    {% if not usuario or usuario.perfil == 'EMPRESARIO' %}
+      <a class="botao" href="{{ url_for('avaliar', oferta_id=oferta.id) }}">Avaliar esta oferta</a>
+    {% endif %}
+  </div>
+  {% for a in oferta.avaliacoes_aprovadas() %}
+    <article class="avaliacao">
+      <div class="notas-avaliacao">
+        <span>Empregabilidade <b>{{ a.nota_empregabilidade }}</b></span>
+        <span>Preparo técnico <b>{{ a.nota_preparo }}</b></span>
+        <span>Soft skills <b>{{ a.nota_soft_skills }}</b></span>
+      </div>
+      {% if a.comentario %}<p>“{{ a.comentario }}”</p>{% endif %}
+      {# RNF04: o nome do avaliador não é exibido, só a empresa #}
+      <small>Recrutador(a) da empresa {{ a.autor_empresa }} · {{ a.data[:10] }}</small>
+    </article>
+  {% else %}
+    <p class="vazio">Ainda não há avaliações aprovadas do mercado para esta oferta.</p>
+  {% endfor %}
+</section>
+{% endblock %}

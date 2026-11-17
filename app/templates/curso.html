@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block titulo %}{{ curso.nome }}{% endblock %}
+{% block conteudo %}
+<a class="voltar" href="{{ url_for('ranking', curso=curso.id) }}">← Ver ranking de {{ curso.nome }}</a>
+<h1>{{ curso.nome }}</h1>
+<p class="sub">Área: {{ curso.area }}</p>
+<section class="pitch grande">
+  {% if curso.tem_video() %}
+    <p><a class="botao" href="{{ curso.pitch_video_url }}" target="_blank" rel="noopener">▶ Assistir ao vídeo do pitch</a></p>
+  {% endif %}
+  <p>{{ curso.pitch_texto }}</p>
+</section>
+{% endblock %}

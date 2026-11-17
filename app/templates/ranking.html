@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block titulo %}Ranking{% endblock %}
+{% block conteudo %}
+<h1>Ranking por curso</h1>
+<p class="sub">Nota final = 60% nota oficial do MEC (CPC/ENADE) + 40% avaliação do mercado.</p>
+
+{# UC02 – Filtrar ranking (RF02) #}
+<form class="filtros" method="get">
+  <label>Curso
+    <select name="curso">
+      {% for c in cursos %}<option value="{{ c.id }}" {% if c.id == curso_id %}selected{% endif %}>{{ c.nome }}</option>{% endfor %}
+    </select>
+  </label>
+  <label>Tipo
+    <select name="tipo">
+      <option value="">Todos</option>
+      {% for t in tipos %}<option value="{{ t.value }}" {% if filtros.tipo == t.value %}selected{% endif %}>{{ 'Pública' if t.value == 'PUBLICA' else 'Privada' }}</option>{% endfor %}
+    </select>
+  </label>
+  <label>Estado
+    <select name="uf">
+      <option value="">Todos</option>
+      {% for uf in ufs %}<option {% if filtros.uf == uf %}selected{% endif %}>{{ uf }}</option>{% endfor %}
+    </select>
+  </label>
+  <label>Modalidade
+    <select name="modalidade">
+      <option value="">Todas</option>
+      {% for m in modalidades %}<option value="{{ m.value }}" {% if filtros.modalidade == m.value %}selected{% endif %}>{{ m.rotulo }}</option>{% endfor %}
+    </select>
+  </label>
+  <button class="botao">Filtrar</button>
+  {% if curso_id %}<a class="link-pitch" href="{{ url_for('curso', curso_id=curso_id) }}">▶ Pitch do curso</a>{% endif %}
+</form>
+
+{% if not ofertas %}
+  <p class="vazio">Nenhuma instituição encontrada com esses filtros.</p>
+{% else %}
+<ol class="ranking">
+  {% for o in ofertas %}
+  <li>
+    <span class="posicao">{{ loop.index }}º</span>
+    <div class="info">
+      <a class="nome" href="{{ url_for('oferta', oferta_id=o.id) }}">{{ o.instituicao.nome }}</a>
+      <div class="meta">
+        <span class="selo {{ 'publica' if o.instituicao.eh_publica() else 'privada' }}">{{ 'Pública' if o.instituicao.eh_publica() else 'Privada' }}</span>
+        {{ o.instituicao.cidade }}/{{ o.instituicao.uf }} · {{ o.modalidade.rotulo }} · {{ o.mensalidade_formatada() }}
+      </div>
+    </div>
+    <div class="notas">
+      <div><small>Oficial</small>{{ o.nota_oficial() | nota }}</div>
+      <div><small>Mercado</small>{{ o.media_mercado() | nota }}</div>
+      <div class="final"><small>Final</small>{{ o.nota_final() | nota }}</div>
+    </div>
+    {% if o.nota_oficial() is none %}<span class="etiqueta">sem nota oficial</span>
+    {% elif o.media_mercado() is none %}<span class="etiqueta">sem avaliação do mercado</span>{% endif %}
+  </li>
+  {% endfor %}
+</ol>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block titulo %}Instituições{% endblock %}
+{% block conteudo %}
+<h1>Instituições</h1>
+<div class="admin">
+  <table>
+    <tr><th>Nome</th><th>Sigla</th><th>Tipo</th><th>Cidade/UF</th><th></th></tr>
+    {% for i in itens %}
+    <tr>
+      <td>{{ i.nome }}</td><td>{{ i.sigla or '' }}</td><td>{{ i.tipo.value.title() }}</td><td>{{ i.cidade }}/{{ i.uf }}</td>
+      <td class="acoes">
+        <a href="{{ url_for('admin_instituicoes', editar=i.id) }}">Editar</a>
+        <form method="post" action="{{ url_for('remover_instituicao', id_=i.id) }}" onsubmit="return confirm('Remover {{ i.nome }}?')"><button class="link">Remover</button></form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <form class="caixa" method="post">
+    <h2>{{ 'Editar' if editar else 'Nova' }} instituição</h2>
+    <input type="hidden" name="id" value="{{ editar.id if editar else '' }}">
+    <label>Nome <input name="nome" required value="{{ editar.nome if editar else '' }}"></label>
+    <label>Sigla <input name="sigla" value="{{ editar.sigla or '' if editar else '' }}"></label>
+    <label>Tipo
+      <select name="tipo">{% for t in tipos %}<option value="{{ t.value }}" {% if editar and editar.tipo == t %}selected{% endif %}>{{ t.value.title() }}</option>{% endfor %}</select>
+    </label>
+    <label>Cidade <input name="cidade" required value="{{ editar.cidade if editar else '' }}"></label>
+    <label>UF <input name="uf" required maxlength="2" value="{{ editar.uf if editar else '' }}"></label>
+    <label>Site <input type="url" name="site" value="{{ editar.site or '' if editar else '' }}"></label>
+    <button class="botao">Salvar</button>
+    {% if editar %}<a href="{{ url_for('admin_instituicoes') }}">Cancelar</a>{% endif %}
+  </form>
+</div>
+{% endblock %}

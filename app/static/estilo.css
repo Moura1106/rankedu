@@ -1,0 +1,110 @@
+:root {
+  --fundo: #f5f7fb;
+  --cartao: #ffffff;
+  --texto: #1d2433;
+  --suave: #5d6678;
+  --borda: #dfe4ee;
+  --primaria: #2f5bd3;
+  --primaria-escura: #2349ad;
+  --publica: #0f7b52;
+  --privada: #8a4bd1;
+  --ok: #e5f6ec;
+  --erro: #fdeaea;
+  --aviso: #fff6dc;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: "Segoe UI", system-ui, sans-serif; background: var(--fundo); color: var(--texto); line-height: 1.5; }
+a { color: var(--primaria); }
+main { max-width: 980px; margin: 0 auto; padding: 24px 16px 48px; }
+h1 { margin: 8px 0 4px; font-size: 1.7rem; }
+h2 { font-size: 1.2rem; }
+.sub { color: var(--suave); margin-top: 0; font-weight: normal; }
+
+/* topo */
+.topo { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
+        padding: 12px 24px; background: var(--cartao); border-bottom: 1px solid var(--borda); }
+.marca { font-size: 1.4rem; font-weight: 700; color: var(--texto); text-decoration: none; }
+.marca span { color: var(--primaria); }
+.topo nav { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.topo nav a { text-decoration: none; }
+.quem { color: var(--suave); font-size: .9rem; }
+footer { text-align: center; color: var(--suave); font-size: .8rem; padding: 24px; }
+
+/* botões e avisos */
+.botao { display: inline-block; background: var(--primaria); color: #fff; border: 0; border-radius: 8px;
+         padding: 9px 16px; font: inherit; cursor: pointer; text-decoration: none; }
+.botao:hover { background: var(--primaria-escura); }
+.botao.pequeno { padding: 5px 12px; color: #fff !important; }
+.botao.secundario { background: #fff; color: var(--texto); border: 1px solid var(--borda); }
+button.link { background: none; border: 0; color: #b42318; cursor: pointer; font: inherit; padding: 0; }
+.aviso { padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; background: var(--aviso); }
+.aviso.ok { background: var(--ok); }
+.aviso.erro { background: var(--erro); }
+.vazio { color: var(--suave); padding: 24px; text-align: center; background: var(--cartao); border-radius: 12px; }
+
+/* filtros */
+.filtros { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; background: var(--cartao);
+           padding: 16px; border-radius: 12px; border: 1px solid var(--borda); margin: 16px 0; }
+.filtros label { display: flex; flex-direction: column; font-size: .85rem; color: var(--suave); }
+select, input, textarea { font: inherit; padding: 7px 9px; border: 1px solid var(--borda); border-radius: 8px; background: #fff; color: var(--texto); }
+.link-pitch { margin-left: auto; }
+
+/* ranking */
+.ranking { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.ranking li { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; position: relative;
+              background: var(--cartao); border: 1px solid var(--borda); border-radius: 12px; padding: 14px 18px; }
+.posicao { font-size: 1.5rem; font-weight: 700; color: var(--primaria); width: 44px; }
+.info { flex: 1; min-width: 220px; }
+.nome { font-weight: 600; font-size: 1.05rem; text-decoration: none; color: var(--texto); }
+.nome:hover { color: var(--primaria); }
+.meta { color: var(--suave); font-size: .9rem; }
+.selo { display: inline-block; font-size: .75rem; font-weight: 600; color: #fff; border-radius: 99px; padding: 1px 9px; margin-right: 4px; }
+.selo.publica { background: var(--publica); }
+.selo.privada { background: var(--privada); }
+.notas { display: flex; gap: 18px; text-align: center; }
+.notas div { font-weight: 600; }
+.notas small { display: block; font-weight: normal; color: var(--suave); font-size: .75rem; }
+.notas .final { font-size: 1.3rem; color: var(--primaria); }
+.etiqueta { position: absolute; top: -9px; right: 16px; font-size: .72rem; background: var(--aviso);
+            border: 1px solid #ecd9a0; border-radius: 99px; padding: 0 8px; }
+
+/* detalhes */
+.voltar { display: inline-block; margin-bottom: 8px; text-decoration: none; }
+.cartoes { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin: 20px 0 6px; }
+.cartao { background: var(--cartao); border: 1px solid var(--borda); border-radius: 12px; padding: 14px; }
+.cartao small { display: block; color: var(--suave); }
+.cartao strong { font-size: 1.6rem; }
+.cartao span { display: block; color: var(--suave); font-size: .85rem; }
+.formula { color: var(--suave); font-size: .85rem; }
+.pitch { background: var(--cartao); border-left: 4px solid var(--primaria); border-radius: 8px; padding: 4px 18px 12px; margin: 20px 0; }
+.pitch.grande { font-size: 1.1rem; }
+.titulo-secao { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.avaliacao { background: var(--cartao); border: 1px solid var(--borda); border-radius: 12px; padding: 12px 16px; margin-bottom: 10px; }
+.avaliacao p { margin: 6px 0; font-style: italic; }
+.avaliacao small { color: var(--suave); }
+.notas-avaliacao { display: flex; flex-wrap: wrap; gap: 14px; font-size: .9rem; color: var(--suave); }
+.notas-avaliacao b { color: var(--texto); }
+
+/* formulários */
+.caixa { background: var(--cartao); border: 1px solid var(--borda); border-radius: 12px; padding: 20px 24px;
+         max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+.caixa label { display: flex; flex-direction: column; gap: 4px; font-size: .9rem; }
+.estrelas { border: 1px solid var(--borda); border-radius: 8px; display: flex; gap: 14px; flex-wrap: wrap; }
+.estrelas label { flex-direction: row; align-items: center; gap: 4px; }
+
+/* administração */
+main:has(.admin) { max-width: 1200px; }
+.admin { display: grid; grid-template-columns: 1fr 320px; gap: 20px; align-items: start; }
+.admin .caixa { margin: 0; }
+table { width: 100%; border-collapse: collapse; background: var(--cartao); border-radius: 12px; overflow: hidden; border: 1px solid var(--borda); font-size: .9rem; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--borda); }
+th { background: #eef2fa; }
+div.acoes { display: flex; gap: 10px; align-items: center; margin-top: 8px; }
+td.acoes { white-space: nowrap; }
+.acoes form { margin: 0; }
+td.acoes form { display: inline; margin-left: 8px; }
+@media (max-width: 760px) {
+  .admin { grid-template-columns: 1fr; }
+  .notas { width: 100%; justify-content: space-around; }
+  table { display: block; overflow-x: auto; }
+}

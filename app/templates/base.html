@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}RankEdu{% endblock %} · RankEdu</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
+</head>
+<body>
+<header class="topo">
+  <a class="marca" href="{{ url_for('ranking') }}">Rank<span>Edu</span></a>
+  <nav>
+    <a href="{{ url_for('ranking') }}">Ranking</a>
+    {% if usuario and usuario.perfil == 'ADMIN' %}
+      <a href="{{ url_for('painel_admin') }}">Moderação</a>
+      <a href="{{ url_for('admin_instituicoes') }}">Instituições</a>
+      <a href="{{ url_for('admin_cursos') }}">Cursos</a>
+      <a href="{{ url_for('admin_ofertas') }}">Ofertas</a>
+    {% endif %}
+    {% if usuario %}
+      <span class="quem">{{ usuario.nome }}{% if usuario.perfil == 'EMPRESARIO' %} · {{ usuario.empresa }}{% endif %}</span>
+      <a href="{{ url_for('logout') }}">Sair</a>
+    {% else %}
+      <a href="{{ url_for('login') }}">Entrar</a>
+      <a class="botao pequeno" href="{{ url_for('cadastro') }}">Sou empresário</a>
+    {% endif %}
+  </nav>
+</header>
+
+<main>
+  {% for categoria, mensagem in get_flashed_messages(with_categories=true) %}
+    <div class="aviso {{ categoria }}">{{ mensagem }}</div>
+  {% endfor %}
+  {% block conteudo %}{% endblock %}
+</main>
+
+<footer>RankEdu · Projeto A3 – Universidade São Judas Tadeu · ODS 4 e 8 · dados fictícios para demonstração</footer>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block titulo %}Cadastro de empresário{% endblock %}
+{% block conteudo %}
+<form class="caixa" method="post">
+  <h1>Cadastro de empresário/recrutador</h1>
+  <p class="sub">Seu nome não aparece nas avaliações; só o nome da empresa.</p>
+  <label>Nome <input name="nome" required value="{{ request.form.nome }}"></label>
+  <label>E-mail <input type="email" name="email" required value="{{ request.form.email }}"></label>
+  <label>Senha (mín. 6 caracteres) <input type="password" name="senha" required minlength="6"></label>
+  <label>Empresa <input name="empresa" required value="{{ request.form.empresa }}"></label>
+  <label>Cargo <input name="cargo" required value="{{ request.form.cargo }}"></label>
+  <button class="botao">Cadastrar</button>
+</form>
+{% endblock %}

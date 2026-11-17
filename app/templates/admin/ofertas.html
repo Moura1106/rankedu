@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block titulo %}Ofertas{% endblock %}
+{% block conteudo %}
+<h1>Ofertas de curso</h1>
+<div class="admin">
+  <table>
+    <tr><th>Curso</th><th>Instituição</th><th>Modalidade</th><th>CPC</th><th>ENADE</th><th>Mensalidade</th><th></th></tr>
+    {% for o in itens %}
+    <tr>
+      <td>{{ o.curso.nome }}</td><td>{{ o.instituicao.sigla or o.instituicao.nome }}</td><td>{{ o.modalidade.rotulo }}</td>
+      <td>{{ o.cpc or '—' }}</td><td>{{ o.conceito_enade or '—' }}</td><td>{{ o.mensalidade_formatada() }}</td>
+      <td class="acoes">
+        <a href="{{ url_for('admin_ofertas', editar=o.id) }}">Editar</a>
+        <form method="post" action="{{ url_for('remover_oferta', id_=o.id) }}" onsubmit="return confirm('Remover a oferta e todas as suas avaliações?')"><button class="link">Remover</button></form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <form class="caixa" method="post">
+    <h2>{{ 'Editar' if editar else 'Nova' }} oferta</h2>
+    <input type="hidden" name="id" value="{{ editar.id if editar else '' }}">
+    <label>Instituição
+      <select name="instituicao_id">{% for i in instituicoes %}<option value="{{ i.id }}" {% if editar and editar.instituicao.id == i.id %}selected{% endif %}>{{ i.nome }}</option>{% endfor %}</select>
+    </label>
+    <label>Curso
+      <select name="curso_id">{% for c in cursos %}<option value="{{ c.id }}" {% if editar and editar.curso.id == c.id %}selected{% endif %}>{{ c.nome }}</option>{% endfor %}</select>
+    </label>
+    <label>Modalidade
+      <select name="modalidade">{% for m in modalidades %}<option value="{{ m.value }}" {% if editar and editar.modalidade == m %}selected{% endif %}>{{ m.rotulo }}</option>{% endfor %}</select>
+    </label>
+    <label>CPC (1–5, opcional) <input type="number" name="cpc" min="1" max="5" value="{{ editar.cpc or '' if editar else '' }}"></label>
+    <label>Conceito ENADE (1–5, opcional) <input type="number" name="conceito_enade" min="1" max="5" value="{{ editar.conceito_enade or '' if editar else '' }}"></label>
+    <label>Mensalidade (R$) <input type="number" name="mensalidade" min="0" step="0.01" value="{{ editar.mensalidade if editar else '0' }}"></label>
+    <button class="botao">Salvar</button>
+    {% if editar %}<a href="{{ url_for('admin_ofertas') }}">Cancelar</a>{% endif %}
+  </form>
+</div>
+{% endblock %}

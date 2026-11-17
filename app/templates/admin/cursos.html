@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block titulo %}Cursos{% endblock %}
+{% block conteudo %}
+<h1>Cursos e pitches</h1>
+<div class="admin">
+  <table>
+    <tr><th>Curso</th><th>Área</th><th>Vídeo</th><th></th></tr>
+    {% for c in itens %}
+    <tr>
+      <td>{{ c.nome }}</td><td>{{ c.area }}</td><td>{{ 'sim' if c.tem_video() else '—' }}</td>
+      <td class="acoes">
+        <a href="{{ url_for('admin_cursos', editar=c.id) }}">Editar</a>
+        <form method="post" action="{{ url_for('remover_curso', id_=c.id) }}" onsubmit="return confirm('Remover {{ c.nome }}?')"><button class="link">Remover</button></form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <form class="caixa" method="post">
+    <h2>{{ 'Editar' if editar else 'Novo' }} curso</h2>
+    <input type="hidden" name="id" value="{{ editar.id if editar else '' }}">
+    <label>Nome <input name="nome" required value="{{ editar.nome if editar else '' }}"></label>
+    <label>Área <input name="area" required value="{{ editar.area if editar else '' }}"></label>
+    <label>Pitch (texto) <textarea name="pitch_texto" rows="5" required>{{ editar.pitch_texto if editar else '' }}</textarea></label>
+    <label>Link do vídeo <input type="url" name="pitch_video_url" value="{{ editar.pitch_video_url or '' if editar else '' }}"></label>
+    <button class="botao">Salvar</button>
+    {% if editar %}<a href="{{ url_for('admin_cursos') }}">Cancelar</a>{% endif %}
+  </form>
+</div>
+{% endblock %}

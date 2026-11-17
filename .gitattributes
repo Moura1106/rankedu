@@ -1,0 +1,2 @@
+# Arquivos .bat precisam de CRLF para o Windows executar direito (inclusive quando baixados em ZIP)
+*.bat text eol=crlf
